@@ -1,7 +1,6 @@
 ---
 - name: Linux Patching Demo
   hosts: all
-  become: yes
   gather_facts: yes
 
   tasks:
