@@ -1,0 +1,15 @@
+---
+- hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Ping test
+      ping:
+
+    - name: Show hostname
+      debug:
+        var: ansible_hostname
+
+    - name: Show OS
+      debug:
+        var: ansible_distribution
