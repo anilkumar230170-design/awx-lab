@@ -5,54 +5,30 @@
 
   tasks:
 
-    - name: Display OS Information
+    - name: Display hostname
       debug:
-        msg: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
+        msg: "Hostname: {{ ansible_hostname }}"
 
-    - name: Check kernel version before patching
-      command: uname -r
-      register: kernel_before
-      changed_when: false
-
-    - name: Display current kernel
+    - name: Display operating system
       debug:
-        var: kernel_before.stdout
+        msg: "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
 
-    - name: Update package cache (Ubuntu/Debian)
-      apt:
-        update_cache: yes
-      when: ansible_os_family == "Debian"
-
-    - name: Check available package updates
-      command: >
-        bash -c "apt list --upgradable 2>/dev/null | wc -l"
-      register: updates_available
-      changed_when: false
-      when: ansible_os_family == "Debian"
-
-    - name: Display updates count
+    - name: Display kernel version
       debug:
-        msg: "Available updates: {{ updates_available.stdout }}"
-      when: ansible_os_family == "Debian"
+        msg: "Kernel: {{ ansible_kernel }}"
 
-    - name: Simulate patching activity
+    - name: Display CPU count
+      debug:
+        msg: "vCPU: {{ ansible_processor_vcpus }}"
+
+    - name: Display memory
+      debug:
+        msg: "Memory MB: {{ ansible_memtotal_mb }}"
+
+    - name: Simulate patch installation
       debug:
         msg: "Patching completed successfully"
 
-    - name: Check disk space
-      command: df -h /
-      register: disk_space
-      changed_when: false
-
-    - name: Display disk space
+    - name: Compliance status
       debug:
-        var: disk_space.stdout_lines
-
-    - name: Check system uptime
-      command: uptime
-      register: uptime_info
-      changed_when: false
-
-    - name: Display uptime
-      debug:
-        var: uptime_info.stdout
+        msg: "Server is compliant"
