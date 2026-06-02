@@ -1,0 +1,59 @@
+---
+- name: Linux Patching Demo
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    - name: Display OS Information
+      debug:
+        msg: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+    - name: Check kernel version before patching
+      command: uname -r
+      register: kernel_before
+      changed_when: false
+
+    - name: Display current kernel
+      debug:
+        var: kernel_before.stdout
+
+    - name: Update package cache (Ubuntu/Debian)
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Check available package updates
+      command: >
+        bash -c "apt list --upgradable 2>/dev/null | wc -l"
+      register: updates_available
+      changed_when: false
+      when: ansible_os_family == "Debian"
+
+    - name: Display updates count
+      debug:
+        msg: "Available updates: {{ updates_available.stdout }}"
+      when: ansible_os_family == "Debian"
+
+    - name: Simulate patching activity
+      debug:
+        msg: "Patching completed successfully"
+
+    - name: Check disk space
+      command: df -h /
+      register: disk_space
+      changed_when: false
+
+    - name: Display disk space
+      debug:
+        var: disk_space.stdout_lines
+
+    - name: Check system uptime
+      command: uptime
+      register: uptime_info
+      changed_when: false
+
+    - name: Display uptime
+      debug:
+        var: uptime_info.stdout
