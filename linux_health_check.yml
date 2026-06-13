@@ -5,9 +5,9 @@
 
   tasks:
 
-    - name: Hostname
-      command: /bin/hostname
-      register: hostname
+    - name: Show hostname
+      debug:
+      msg: "{{ ansible_hostname }}"
 
     - name: Uptime
       command: uptime
