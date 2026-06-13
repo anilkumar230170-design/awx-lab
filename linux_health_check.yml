@@ -6,7 +6,7 @@
   tasks:
 
     - name: Hostname
-      command: hostname
+      command: /bin/hostname
       register: hostname
 
     - name: Uptime
